@@ -12,7 +12,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<NavUser | null>(null);
   const [sessionChecked, setSessionChecked] = useState(false);
-  const displayUserName = 'Name';
+  const displayUserName = user?.leetcodeUsername || user?.name || 'LeetCode User';
 
   const loadSession = async () => {
     try {
