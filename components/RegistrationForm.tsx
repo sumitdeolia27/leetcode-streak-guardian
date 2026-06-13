@@ -24,9 +24,9 @@ export default function RegistrationForm() {
 
   const normalizedPhone = form.phoneNumber.replace(/\s+/g, '');
   const phoneDigits = normalizedPhone.replace(/\D/g, '');
-  const botUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || 'LeetCode_sumit_bot';
+  const botUsername = process.env.NEXT_PUBLIC_TELEGRAM_BOT_USERNAME || 'StreakGuardianDemoBot';
   const telegramBotUrl = `https://t.me/${botUsername}?start=phone_${phoneDigits}`;
-  const showTelegramHelp = phoneDigits.length >= 10;
+  const canFetchTelegramChatId = phoneDigits.length >= 10;
 
   const verifyUsername = async () => {
     if (!form.leetcodeUsername.trim()) return;
@@ -125,7 +125,7 @@ export default function RegistrationForm() {
             type="text"
             value={form.name}
             onChange={(e) => setForm({ ...form, name: e.target.value })}
-            placeholder="Sumit"
+            placeholder="Name"
             required
             className="w-full px-4 py-3 rounded-lg input-dark"
           />
@@ -139,47 +139,10 @@ export default function RegistrationForm() {
             type="tel"
             value={form.phoneNumber}
             onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })}
-            placeholder="+918394855509"
+            placeholder="+911234567890"
             required
             className="w-full px-4 py-3 rounded-lg input-dark"
           />
-          {showTelegramHelp && (
-            <div className="mt-3 rounded-lg border border-lc-orange/30 bg-lc-orange/10 p-3">
-              <p className="text-xs text-gray-300 mb-3">
-                Open the Telegram bot with this phone number, tap Start, then come back and fill the chat ID automatically.
-              </p>
-              <div className="flex flex-col gap-2 sm:flex-row">
-                <a
-                  href={telegramBotUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center rounded-lg bg-lc-orange px-4 py-2 text-sm font-bold text-black hover:bg-lc-yellow"
-                >
-                  Open Telegram Bot
-                </a>
-                <button
-                  type="button"
-                  onClick={fetchTelegramChatId}
-                  disabled={fetchingChatId}
-                  className="inline-flex items-center justify-center rounded-lg border border-lc-orange/50 px-4 py-2 text-sm font-bold text-lc-orange hover:bg-lc-orange/10 disabled:opacity-50"
-                >
-                  {fetchingChatId ? 'Checking...' : 'Fill Chat ID'}
-                </button>
-              </div>
-              <p className="mt-3 break-all text-xs text-gray-500">
-                If Telegram does not show Start, send this message to the bot: /start phone_{phoneDigits}
-              </p>
-              {telegramMessage.text && (
-                <p
-                  className={`mt-3 text-xs font-medium ${
-                    telegramMessage.type === 'error' ? 'text-lc-red' : 'text-lc-green'
-                  }`}
-                >
-                  {telegramMessage.text}
-                </p>
-              )}
-            </div>
-          )}
         </div>
       </div>
 
@@ -210,7 +173,7 @@ export default function RegistrationForm() {
               setLcVerified(null);
             }}
             onBlur={verifyUsername}
-            placeholder="_sumit27_"
+            placeholder="demo_user123"
             required
             className="w-full px-4 py-3 rounded-lg input-dark pr-12"
           />
@@ -273,6 +236,48 @@ export default function RegistrationForm() {
             placeholder="Optional, for alerts"
             className="w-full px-4 py-3 rounded-lg input-dark"
           />
+          <div className="mt-3 rounded-lg border border-lc-border/50 bg-lc-darker/50 p-3">
+            <p className="text-xs text-gray-500">
+              Need a chat ID? Enter your phone number, open the bot, then fill it automatically.
+            </p>
+            <div className="mt-3 grid gap-2 sm:grid-cols-2">
+              <a
+                href={canFetchTelegramChatId ? telegramBotUrl : '#'}
+                target="_blank"
+                rel="noreferrer"
+                aria-disabled={!canFetchTelegramChatId}
+                className={`inline-flex min-h-[40px] items-center justify-center rounded-lg px-3 py-2 text-sm font-bold ${
+                  canFetchTelegramChatId
+                    ? 'bg-lc-orange text-black hover:bg-lc-yellow'
+                    : 'pointer-events-none bg-lc-border/40 text-gray-500'
+                }`}
+              >
+                Open Bot
+              </a>
+              <button
+                type="button"
+                onClick={fetchTelegramChatId}
+                disabled={!canFetchTelegramChatId || fetchingChatId}
+                className="inline-flex min-h-[40px] items-center justify-center rounded-lg border border-lc-orange/50 px-3 py-2 text-sm font-bold text-lc-orange hover:bg-lc-orange/10 disabled:border-lc-border/50 disabled:text-gray-500 disabled:opacity-70"
+              >
+                {fetchingChatId ? 'Checking...' : 'Fill Chat ID'}
+              </button>
+            </div>
+            {!canFetchTelegramChatId && (
+              <p className="mt-2 text-xs text-gray-600">
+                Add a valid phone number first.
+              </p>
+            )}
+            {telegramMessage.text && (
+              <p
+                className={`mt-2 text-xs font-medium ${
+                  telegramMessage.type === 'error' ? 'text-lc-red' : 'text-lc-green'
+                }`}
+              >
+                {telegramMessage.text}
+              </p>
+            )}
+          </div>
         </div>
 
         <div>

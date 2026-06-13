@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 
 interface UserCardProps {
   username: string;
+  displayUsername?: string;
 }
 
 interface LeetCodeData {
@@ -14,7 +15,7 @@ interface LeetCodeData {
   stats: { difficulty: string; count: number; submissions: number }[];
 }
 
-export default function UserCard({ username }: UserCardProps) {
+export default function UserCard({ username, displayUsername }: UserCardProps) {
   const [data, setData] = useState<LeetCodeData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -61,18 +62,19 @@ export default function UserCard({ username }: UserCardProps) {
   const easy = data.stats.find((s) => s.difficulty === 'Easy')?.count || 0;
   const medium = data.stats.find((s) => s.difficulty === 'Medium')?.count || 0;
   const hard = data.stats.find((s) => s.difficulty === 'Hard')?.count || 0;
+  const visibleUsername = displayUsername || data.username;
 
   return (
     <div className="glass-card rounded-xl p-6 neon-border hover:scale-[1.02] transition-transform">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-lc-orange to-neon-orange flex items-center justify-center text-black font-bold text-lg">
-            {data.username[0].toUpperCase()}
+            {visibleUsername[0].toUpperCase()}
           </div>
           <div>
-            <h3 className="font-bold text-white">{data.username}</h3>
+            <h3 className="font-bold text-white">{visibleUsername}</h3>
             <a
-              href={`https://leetcode.com/u/${data.username}`}
+              href={displayUsername ? 'https://leetcode.com/problemset/' : `https://leetcode.com/u/${data.username}`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs text-lc-orange hover:underline"

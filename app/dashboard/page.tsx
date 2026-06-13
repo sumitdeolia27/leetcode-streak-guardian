@@ -95,6 +95,12 @@ function formatTime12(value: string) {
 }
 
 const weekdayLabels = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+const demoUser = {
+  name: 'Name',
+  email: 'name@example.com',
+  phoneNumber: '+911234567890',
+  leetcodeUsername: 'demo_user123',
+};
 
 export default function Dashboard() {
   const [loginMode, setLoginMode] = useState<'identifier' | 'email'>('identifier');
@@ -748,7 +754,7 @@ export default function Dashboard() {
                       onChange={(e) =>
                         setIdentifierLogin({ ...identifierLogin, identifier: e.target.value })
                       }
-                      placeholder="_sumit27_ or Sumit"
+                      placeholder="demo_user123 or Name"
                       required
                       className="w-full px-4 py-3 rounded-lg input-dark"
                     />
@@ -903,7 +909,10 @@ export default function Dashboard() {
               </div>
 
               <div className="mb-8">
-                <UserCard username={user.leetcodeUsername} />
+                <UserCard
+                  username={user.leetcodeUsername}
+                  displayUsername={demoUser.leetcodeUsername}
+                />
               </div>
 
               <div className="glass-card rounded-2xl p-6 neon-border mb-8">
@@ -913,7 +922,7 @@ export default function Dashboard() {
                       Telegram Alert Settings
                     </h2>
                     <p className="break-words text-gray-500 text-sm">
-                      {user.name} / {user.email} / {user.leetcodeUsername}
+                      {demoUser.name} / {demoUser.email} / {demoUser.leetcodeUsername}
                     </p>
                   </div>
                   <button
@@ -936,7 +945,7 @@ export default function Dashboard() {
                       onChange={(e) =>
                         setSettings({ ...settings, telegramChatId: e.target.value })
                       }
-                      placeholder={user.telegramChatId || 'Add chat ID for alerts'}
+                      placeholder="Add chat ID for alerts"
                       className="w-full px-4 py-3 rounded-lg input-dark"
                     />
                   </div>

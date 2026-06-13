@@ -12,6 +12,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [user, setUser] = useState<NavUser | null>(null);
   const [sessionChecked, setSessionChecked] = useState(false);
+  const displayUserName = 'Name';
 
   const loadSession = async () => {
     try {
@@ -90,7 +91,7 @@ export default function Navbar() {
           {sessionChecked && user && (
             <div className="flex items-center gap-3 border-l border-lc-border/50 pl-5">
               <span className="max-w-36 truncate text-sm text-gray-400">
-                {user.name || user.leetcodeUsername}
+                {displayUserName}
               </span>
               <button
                 type="button"
@@ -137,7 +138,7 @@ export default function Navbar() {
         <div className="md:hidden border-t border-lc-border/30 px-4 py-3 flex flex-col gap-3">
           {sessionChecked && user && (
             <p className="text-sm text-gray-500">
-              Signed in as <span className="text-gray-300">{user.name || user.leetcodeUsername}</span>
+              Signed in as <span className="text-gray-300">{displayUserName}</span>
             </p>
           )}
           {sessionChecked && links.map((link) => (

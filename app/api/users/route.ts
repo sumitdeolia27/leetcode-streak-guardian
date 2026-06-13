@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
 
     if (!/^\+[0-9]{10,15}$/.test(phoneNumber)) {
       return NextResponse.json(
-        { error: 'Invalid phone number. Use format: +918394855509' },
+        { error: 'Invalid phone number. Use format: +911234567890' },
         { status: 400 }
       );
     }
